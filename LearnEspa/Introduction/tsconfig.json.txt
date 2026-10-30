@@ -1,0 +1,101 @@
+Introduction Of tsconfig.json
+======================================================================
+package.json
+  ├─ 声明安装 TypeScript、vue-tsc、Vite、@types/node 等工具
+  └─ 定义 npm run build 命令
+                    ↓
+tsconfig.json         → 检查 src 下的前端代码
+tsconfig.node.json    → 为 vite.config.ts 提供检查规则
+vite.config.ts        → 告诉 Vite如何启动、代理请求和构建
+                    ↓
+npm run build         → 先执行 vue-tsc --noEmit，再执行 vite build
+                    ↓
+dist                  → Vite 生成的网页成品
+---------------------------------------------------------------------
+Both of these are TS's checking rules:
+they tell the tools "which file to check and by what criteria",
+and they are not the actual running page code themselves.
+---------------------------------------------------------------------
+tsconfig 管代码检查，vite.config.ts 管 Vite 的实际行为。
+=======================================================================
+
+=======================================================================
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+
+-----------------------------------------------------------------------
+- 最外面的 { ... }：整份配置。
+- compilerOptions：怎么检查 TypeScript。
+- include：检查哪些文件。
+它采用 JSON 风格：配置名和文字值用双引号，
+: 表示“设置为”，, 分隔相邻设置；
+true 是布尔值，不加引号。["a", "b"] 是一个列表。
+-----------------------------------------------------------------------
+路径别名：
+"baseUrl": ".",
+"paths": {
+  "@/*": ["src/*"]
+}
+. 指 frontend 目录。@/* 对应 src/*，所以代码中的：
+import X from '@/components/X.vue'
+------------------------------------------------------------------------
+include：哪些文件参加检查
+src/**/ 表示 src 下任意层级的文件夹：
+- *.ts：普通 TypeScript 文件。
+- *.d.ts：专门声明类型的文件，例如你打开过的 env.d.ts。
+- *.vue：Vue 组件；项目用 vue-tsc 来检查其中的 TypeScript。
+**你之前关心的测试文件也受这条规则影响：
+**放在 src 下的 .spec.ts 和 src/test/setup.ts 会参与类型检查。
+这表示“开发时检查它们”，不等于测试代码必然被打包进给用户的网页。
+------------------------------------------------------------------------
+references：关联另一份配置
+意思是：这个前端工程还关联一份配置，位置是同目录下的 tsconfig.node.json。
+这样可以分别管理网页代码与 Vite 配置文件的检查规则。
+========================================================================
+
+========================================================================
+它针对的是 vite.config.ts 这个配置文件。
+Vite 是用 Node.js 在你的电脑上启动的，因此这份配置需要认识 Node.js 的类型。
+这里的 node 不是 node_modules 文件夹，也不是 Python 后端。
+------------------------------------------------------------------------
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "types": ["node"]
+  },
+  "include": ["vite.config.ts"]
+}
+--------------------------------------------------------------------------
+"composite": true	让这份配置可以作为另一份 TypeScript 配置引用的项目
+"skipLibCheck": true	不深入检查依赖库的类型声明
+"module": "ESNext"、"moduleResolution": "bundler"	按现代模块和打包工具的方式理解 import
+"allowSyntheticDefaultImports": true	在类型检查时，允许某些依赖用默认导入写法；它不改变代码实际运行方式
+"strict": true	同样开启严格类型检查
+"types": ["node"]	加载 Node.js 的类型说明，让 TypeScript 认识 node:url 等 Node API
+===========================================================================

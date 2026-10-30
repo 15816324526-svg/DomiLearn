@@ -1,0 +1,89 @@
+Introduction Of pyproject.toml
+=========================================================================
+'pyproject.toml' governs how a Python project is installed and what
+dependencies it requires.
+=========================================================================
+
+=========================================================================
+[project]
+name = "example"
+version = "0.1.0"
+dependencies = [
+  "fastapi>=0.115",
+]
+------------------------------------------------------------------------
+[project]：从这里开始是“项目基本信息”这一组。
+name = "example"：设置项目名称；文字用双引号。
+dependencies = [...]：依赖列表；方括号表示一组值。
+# 可以写注释。
+逗号分隔列表里的项目。最后一项后面的逗号也允许保留。
+=========================================================================
+
+=========================================================================
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+-------------------------------------------------------------------------
+This section answers,"What tools are needed to set up this Python project."
+-setuptools is a tool for installing and packaging Python projects;
+>75 indicates that at least version 75 is required.
+-build-backend specifies that 'setuptools' is responsible for 
+the actual buid process.Here ,the term "backend" is a Python packaging
+terminology and does not refer to DomiLearn's business backend server.
+==========================================================================
+
+==========================================================================
+name = "domilearn-backend"
+version = "0.1.0"
+requires-python = ">=3.10"
+--------------------------------------------------------------------------
+Project Identity and Runtime dependencies
+[dependencies] are the third-party libraries that need to be 
+installed to run this backend.
+--------------------------------------------------------------------------
+fastapi	建立后端接口，接收前端的上传、背词和仿写请求
+uvicorn[standard]	启动并运行 FastAPI 服务；[standard] 表示一组附加依赖
+python-multipart	支持处理前端上传的文件
+docling	把教材 PDF 转换为结构化结果
+pypdf	读取 PDF 信息，也用于处理验证样本
+pypdfium2	将 PDF 页面渲染为图像，供词表识别使用
+rapidocr	识别词表页面图像上的文字
+onnxruntime	为本机 OCR 模型提供推理运行环境
+sqlalchemy	用 Python 读写数据库、定义数据库表
+alembic	升级数据库表结构；它对应你刚看的 alembic.ini
+pydantic-settings	读取 .env 和环境变量等程序设置
+httpx	向 DeepSeek API 发送 HTTP 请求
+pywin32	在 Windows 上调用系统功能；当前用于加密保存 API Key
+psutil	系统资源信息工具；我在当前业务源码中没有找到直接导入它的地方，是否仍有必要保留，值得后续审查
+============================================================================================
+
+==========================================================================
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28,<1",
+  "pytest>=8,<10",
+  "pytest-asyncio>=0.25,<2",
+]
+--------------------------------------------------------------------------
+Install the current project and install the 'dev' set of tools.
+Among them,'pytest' is used for running tests,and 'pytest-asyncio' is
+used for asynchronous testing.
+==========================================================================
+
+==========================================================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["docling: slow local Docling integration test"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+--------------------------------------------------------------------------
+testpaths:By default,it looks for tests in backend/tests.
+markers:Register a test marker called 'docling' to identify tests that
+run slowly and require the real Docling.
+
+Here's what to tell setuptools:When installing the project,it looks for 
+Python code named app and its subpakages（子包）.
+The backend implementation you're actually reviewing is primarily located
+in backend/app.
+=========================================================================

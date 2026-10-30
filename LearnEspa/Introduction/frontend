@@ -1,0 +1,70 @@
+Frontend Execution
+=================================================================
+index.html → main.ts → App.vue → router/index.ts → 各页面
+                                      ↓
+                              store 或 api → request.ts → 后端
+
+
+=================================================================
+
+#dist  
+
+#node_modules  安装的第三方依赖
+
+#src True Frontend Source Code
+ #main.ts start-up Vue,Pinia,Route and load CSS
+ #App.vue The outer casing surrounding the page
+ #env.d.ts TS Statement of Vue/Vite
+
+ #router
+  #index.ts
+
+ #api
+  #imitation.ts
+  #index.ts
+  #request.spec.ts
+  #request.ts
+
+ #store
+  #study.ts
+  #textbook.spec.ts
+  #textbook.ts
+  #ui.ts
+  #vocabulary.ts
+  #vocabulary.spec.ts
+
+ #assets
+  #styles
+   #components.css  Public Styles:Button,card 
+   #pages.css
+   theme.css  Global variables:Colors,Font size
+
+ #
+ #
+ #
+ #
+
+
+
+
+
+
+
+
+
+
+
+#.gitignore Ignore the dist and node_modules
+
+#index.html The Sole Entry Point of html
+
+#package-locj.json  Dependencies and execution command
+
+#pakage.json  Dependencies and execution command
+
+#tsconfig.json  Configeration of TS
+
+#tsconfig.node.json  Configeration of TS
+
+#vite.config.ts  Configeration of local development service,api proxy and test
+

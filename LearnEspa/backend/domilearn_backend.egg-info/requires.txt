@@ -1,0 +1,15 @@
+alembic<2,>=1.14
+docling==2.142.1
+fastapi<1,>=0.115
+onnxruntime==1.31.0
+psutil<8,>=6
+pydantic-settings<3,>=2.7
+pypdf<7,>=5
+python-multipart<1,>=0.0.18
+sqlalchemy<3,>=2.0
+uvicorn[standard]<1,>=0.34
+
+[dev]
+httpx<1,>=0.28
+pytest<10,>=8
+pytest-asyncio<2,>=0.25

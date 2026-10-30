@@ -1,0 +1,62 @@
+Introduction of index.html
+=============================================================================
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DomiLearn · Aquí se aprende</title>
+  </head>
+  <body>
+    <!-- Vue 应用的挂载点：整个项目只有这一个 HTML 文件 -->
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+============================================================================
+
+============================================================================
+可以先记住三个层次：
+- <!DOCTYPE html>：告诉浏览器按现代 HTML 标准理解这个文件。
+- <html>：整个网页的最外层。
+- <head>：网页的说明信息，通常不直接显示在页面正文里。
+- <body>：页面正文。上面例子的“你好”就会显示在这里。
+标签通常成对出现：<body> 表示开始，</body> 表示结束。
+缩进只是为了让人容易看出谁包含谁，不会改变页面功能。
+=============================================================================
+
+<!DOCTYPE html>
+声明这是现代 HTML 文件。它不是一个要显示在网页上的文字。
+
+<html lang="zh-CN">
+网页从这里开始。lang="zh-CN" 表示页面主要语言是简体中文，方便浏览器和朗读软件理解内容。页面里仍然可以出现西班牙语。
+
+<head>
+这里放网页的基本说明。head 里面的内容通常不是页面上能看到的卡片或按钮。
+
+<meta charset="UTF-8" />
+指定文字编码为 UTF-8，让浏览器正确读出中文，以及 Aquí 里的重音字母。meta 用于提供信息，不需要像 <head> 那样写一个结束标签。
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+告诉手机浏览器：页面宽度按设备屏幕宽度计算，初始缩放比例为 1。这是移动端页面的基础设置，但它本身不会自动做好手机布局；布局还要靠 CSS。
+
+<title>DomiLearn · Aquí se aprende</title>
+这是浏览器标签页上显示的标题，不是页面里的大标题。
+
+<body>
+浏览器要显示的页面内容从这里开始。
+
+<!-- ... -->
+这是写给看代码的人看的注释，浏览器不会把这句话显示在页面上。
+
+<div id="app"></div>
+这是最关键的一行。div 是一个容器，id="app" 给它取名叫 app。
+它现在看起来是空的，因为真正的仪表盘、侧栏和练习页面要由 Vue 放进这个容器。
+对应的操作就在 [main.ts](D:/LearnEspa/frontend/src/main.ts)：app.mount('#app')。
+这里的 #app 意思是“找到 id 为 app 的元素”。
+
+<script type="module" src="/src/main.ts"></script>
+让网页从 src/main.ts 开始运行前端程序。
+type="module" 表示这段程序可以使用 import 引入其他文件。
+main.ts 接着引入 [App.vue](D:/LearnEspa/frontend/src/App.vue)、路由和样式，
+最终把界面显示在刚才的 <div id="app"> 中。

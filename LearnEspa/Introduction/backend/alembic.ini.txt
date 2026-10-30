@@ -1,0 +1,39 @@
+Introduction Of alembic
+========================================================================
+It is the configuration file for Alembic.
+Alembic is responsible for adjusting the db structure during program
+upgrades,such as adding fields to the imitation record table.
+========================================================================
+
+========================================================================
+The .ini file is typically composed of "sections" and "settings":
+------------------------------------------------------------------------
+[database]
+url = sqlite:///app.db
+
+[logging]
+level = INFO
+------------------------------------------------------------------------
+[database] is the group name,
+and the URL = ……below represents the settings for this group
+========================================================================
+
+========================================================================
+[alembic]
+script_location = %(here)s/migrations
+prepend_sys_path = .
+path_separator = os
+sqlalchemy.url = sqlite:///storage/domilearn.db
+------------------------------------------------------------------------
+[alembic]	Alembic 自己的主要配置分组
+script_location = %(here)s/migrations	迁移脚本放在 backend/migrations。
+%(here)s 是特殊占位符，代表这份 alembic.ini 所在目录；
+因此从别的目录执行命令，也能定位到迁移脚本
+prepend_sys_path = .	
+把当前工作目录加入 Python 的模块查找路径，使迁移代码能导入 app 等模块
+path_separator = os	
+如果某项配置包含多个路径，就采用当前操作系统的路径分隔规则；
+这里不是教材文件路径
+sqlalchemy.url = sqlite:///storage/domilearn.db	
+一个默认的 SQLite 数据库地址，指向 storage/domilearn.db；这是相对路径
+=========================================================================

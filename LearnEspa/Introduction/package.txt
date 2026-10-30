@@ -1,0 +1,138 @@
+Introduction Of package-lock.json and package.json
+
+===========================================================================
+First download and execute npm install
+npm read package.json and package-lock.json
+download the dependencies in node_modules
+Then run : npm run dev to start up the Frontend
+===========================================================================
+
+===========================================================================
+package.json  What tools and libraries i needed
+---------------------------------------------------------------------------
+{
+  "name": "my-app",
+  "private": true,
+  "scripts": {
+    "dev": "vite"
+  }
+}
+---------------------------------------------------------------------------
+{ ... }：一组数据。
+"name": "my-app"：左边是名称，冒号右边是值。
+"private": true：值也可以是 true、false 这样的布尔值。
+"scripts": { ... }：值还可以是另一组数据。
+各项之间用逗号隔开；最后一项后面不加逗号。
+标准 JSON 不能写 // 注释，这一点与代码文件不同。
+---------------------------------------------------------------------------
+{
+  "name": "domilearn-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "pinia": "^2.1.7",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/test-utils": "^2.5.1",
+    "jsdom": "^25.0.1",
+    "typescript": "~5.4.5",
+    "vite": "^5.2.11",
+    "vitest": "^2.1.9",
+    "vue-tsc": "^2.0.19"
+  }
+}
+--------------------------------------------------------------------------
+"name": "domilearn-frontend"  这个前端项目的名称
+"version": "0.1.0"	项目自身的版本号，和 Vue 的版本号不是一回事
+"private": true	  防止误把这个项目发布成 npm 软件包；不是网站的登录保护
+"type": "module"	项目使用 import、export 这种 JavaScript 模块写法
+"scripts"	给常用命令起简短名字
+"dependencies"	网页功能需要使用的库
+"devDependencies"	开发、构建和测试时使用的工具
+
+其中 scripts 是：
+- "dev": "vite"：npm run dev 启动本地开发服务器。
+- "build": "vue-tsc --noEmit && vite build"：npm run build 先检查类型；
+  检查通过后生成 dist/。
+- "preview": "vite preview"：在本机预览构建出的 dist/。
+- "typecheck": "vue-tsc --noEmit"：只检查类型，不生成文件。
+- "test": "vitest"：运行前端测试。
+
+dependencies 中，vue 用来构建页面，vue-router 负责页面路径，pinia 负责共享状态。
+devDependencies 中，vite 负责开发服务器和构建；typescript、vue-tsc 负责类型检查；
+vitest、@vue/test-utils、jsdom 用于测试。它们是开发工具，不是额外加进页面里的功能。
+----------------------------------------------------------------------------
+为什么版本号前面有 ^ 或 ~？
+package.json 写的是允许 npm 选择的版本范围，不一定是电脑上实际安装的精确版本：
+- "vue": "^3.4.21"：允许在兼容的 3.x 范围内选择更新版本。
+你电脑上现在实际安装的是 vue@3.5.44。
+- "typescript": "~5.4.5"：范围更窄，主要允许 5.4.x 的更新。
+你电脑上实际安装的是 5.4.5。
+===========================================================================
+
+===========================================================================
+package-lock.json  record which specific versions were selected this time
+---------------------------------------------------------------------------
+{
+  "name": "domilearn-frontend",
+  "version": "0.1.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "dependencies": {
+        "vue": "^3.4.21"
+      }
+    }
+  }
+}
+--------------------------------------------------------------------------
+"node_modules/@babel/helper-validator-identifier": {
+      "version": "7.29.7",
+      "resolved": "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.29.7.tgz",
+      "integrity": "sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+--------------------------------------------------------------------------
+packages 里的 "" 代表 DomiLearn 前端自身；
+后面大量形如 "node_modules/某个库" 的条目，记录每个实际安装的库。
+例如：
+- version：选中的精确版本。
+- resolved：从哪里取得安装包。
+- integrity：用于核对安装包内容的校验值。
+- dependencies：这个库自己还需要哪些库。
+- dev: true：它属于开发依赖链。
+这也解释了为什么 package.json 只列了十来个直接依赖，
+而锁定文件和 node_modules/ 有很多库：
+Vue、Vite、测试工具也有它们自己的依赖，npm 会在安装时一起处理。
+===========================================================================
+
+===========================================================================
+node_modules  store the libraries files downloaded in the computer
+---------------------------------------------------------------------------
+1.You declare dependencies in 'package.json' or 
+  run 'npm install' for a specific library.
+2.npm selected specific versions by combining 'package.json' and
+  the existing(已有的) 'package-lock.json'.
+3.Updata the lock file and with the npm and place the actual library files 
+  into the node_modules.
+--------------------------------------------------------------------------
+After deleting the node_modules ,you can rebuilt it with 'npm install'.
+Directly modifying the libraries in the node_modules folder will usually 
+be overwritten during the next installation.
+===========================================================================

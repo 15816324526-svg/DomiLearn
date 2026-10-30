@@ -1,0 +1,99 @@
+Backend Execution
+=================================================================
+api/textbook_imports.py → services/import_service.py →
+workers/import_worker.py → converters/docling.py → 
+services/book_extraction.py → models/ 保存结果
+-----------------------------------------------------------------
+仿写则可以从 api/imitation.py 进入，再看 services/imitation.py、
+services/imitation_agents.py 和 services/deepseek_client.py。
+其中 services/imitation.py
+=================================================================
+#.gitignore Ignore the .env pytest debug and storage
+
+#alembic.ini
+
+#pyoroject.toml
+
+#.env.example
+
+#app
+├─ main.py          启动入口：创建 FastAPI，连接各模块
+├─ api/             接收前端请求，定义接口地址
+├─ schemas/         规定请求和响应的数据形状
+├─ services/        主要业务规则
+├─ converters/      PDF 转换接口和 Docling 实现
+├─ workers/         后台执行耗时的教材导入任务
+├─ models/          数据库中的表及其字段
+├─ db/              数据库连接、会话和迁移启动
+└─ core/            配置读取
+|----__pycache__ + .pyc Python运行后生成的缓存
+
+
+#storage
+ #main.ts start-up Vue,Pinia,Route and load CSS
+ #App.vue The outer casing surrounding the page
+ #env.d.ts TS Statement of Vue/Vite
+
+ #script
+  #index.ts
+
+ #api
+  #imitation.ts
+  #index.ts
+  #request.spec.ts
+  #request.ts
+
+ #store
+  #study.ts
+  #textbook.spec.ts
+  #textbook.ts
+  #ui.ts
+  #vocabulary.ts
+  #vocabulary.spec.ts
+
+ #assets
+  #styles
+   #components.css  Public Styles:Button,card 
+   #pages.css
+   theme.css  Global variables:Colors,Font size
+
+ #
+ #
+ #
+ ==============================================|
+ #services
+ ----------------------------------------------|
+  pdf_validation.py
+  → source_storage.py
+  → import_service.py
+  → job_recovery.py
+  → artifact_validation.py
+  → lesson_extraction.py
+  → vocabulary_ocr.py
+  → book_extraction.py
+  → lesson_repository.py
+  → workers/import_worker.py
+  → converters/docling.py
+  → fake_lesson_extraction.py
+ -----------------------------------------------|
+  vocabulary_study.py 
+ -----------------------------------------------|
+ model_settings.py
+  → deepseek_client.py
+  → sentence_preparation.py
+  → imitation_agents.py
+  → imitation.py
+ ================================================|
+
+
+
+
+
+
+
+
+
+
+
+
+
